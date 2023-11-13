@@ -96,13 +96,43 @@ public class RecurrentNeuralNetwork : NeuralNetwork
 
     public static (RecurrentNeuralNetwork, RecurrentNeuralNetwork) Crossover(RecurrentNeuralNetwork parent1, RecurrentNeuralNetwork parent2)
     {
-        var baseResult = NeuralNetwork.Crossover(parent1, parent2);
-        RecurrentNeuralNetwork child1 = (RecurrentNeuralNetwork)baseResult.Item1;
-        RecurrentNeuralNetwork child2 = (RecurrentNeuralNetwork)baseResult.Item2;
+        RecurrentNeuralNetwork child1 = new();
+        RecurrentNeuralNetwork child2 = new();
+
+        child1.Initialize(parent1.inputLayer.ColumnCount, parent1.outputLayer.ColumnCount, parent1.hiddenLayers.Count - 1, parent1.hiddenLayers[0].ColumnCount);
+        child2.Initialize(parent2.inputLayer.ColumnCount, parent2.outputLayer.ColumnCount, parent2.hiddenLayers.Count - 1, parent2.hiddenLayers[0].ColumnCount);
+
+        for (int i = 0; i < child1.weights.Count; i++)
+        {
+            for (int x = 0; x < child1.weights[i].RowCount; x++)
+            {
+                for (int y = 0; y < child1.weights[i].ColumnCount; y++)
+                {
+                    child1.weights[i][x, y] = parent1.weights[i][x, y];
+                    child2.weights[i][x, y] = parent2.weights[i][x, y];
+
+                    if (Random.Range(0.0f, 1.0f) < 0.5f)
+                    {
+                        (child2.weights[i], child1.weights) = (child1.weights[i], child2.weights);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < child1.biases.Count; i++)
+        {
+            child1.biases[i] = parent1.biases[i];
+            child2.biases[i] = parent2.biases[i];
+
+            if (Random.Range(0.0f, 1.0f) < 0.5f)
+            {
+                (child2.biases[i], child1.biases) = (child1.biases[i], child2.biases);
+            }
+        }
 
         for (int i = 0; i < child1.recurrentWeights.Count; i++)
         {
-            for (int x = 0; x < child2.recurrentWeights[i].RowCount; x++)
+            for (int x = 0; x < child1.recurrentWeights[i].RowCount; x++)
             {
                 for (int y = 0; y < child1.recurrentWeights[i].ColumnCount; y++)
                 {

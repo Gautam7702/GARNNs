@@ -1,9 +1,8 @@
 using MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
-using UnityEngine.Assertions;
+
 using Random = UnityEngine.Random;
 
 public class NeuralNetwork : MonoBehaviour
