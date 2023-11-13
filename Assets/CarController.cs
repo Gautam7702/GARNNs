@@ -24,6 +24,9 @@ public class CarController : MonoBehaviour
     public int LAYERS = 1;
     public int NEURONS = 10;
 
+    [Header("Center Camera")]
+    public Camera centerCamera;
+
 
 
     private Vector3 lastPosition;
@@ -34,6 +37,8 @@ public class CarController : MonoBehaviour
     private float aSensor,bSensor,cSensor;
 
     private NeuralNetwork network;
+
+    private int checkCenterCamera = 0;
 
 
     private void Awake(){
@@ -113,6 +118,41 @@ public class CarController : MonoBehaviour
 
         CalculateFitness();
 
+        checkCenterCamera+=1;
+        if(checkCenterCamera%100==0)
+            CaptureSnapshot();
+
+    }
+
+    void CaptureSnapshot(){
+        // Create a RenderTexture with the same dimensions as the screen
+        RenderTexture renderTexture = new RenderTexture(Screen.width, Screen.height, 24);
+        Camera mainCamera = centerCamera;
+
+        // Set the target texture of the main camera to the RenderTexture
+        mainCamera.targetTexture = renderTexture;
+
+        // Render the camera's view to the RenderTexture
+        mainCamera.Render();
+
+        // Read the pixels from the RenderTexture
+        RenderTexture.active = renderTexture;
+        Texture2D snapshot = new Texture2D(Screen.width, Screen.height);
+        snapshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+        snapshot.Apply();
+        RenderTexture.active = null;
+
+        // Reset the target texture of the main camera
+        mainCamera.targetTexture = null;
+
+        // Encode the Texture2D as a PNG file
+        byte[] bytes = snapshot.EncodeToPNG();
+
+        // Save the PNG file to disk (change the file path as needed)
+        string filePath = Application.dataPath + "/Snapshot.png";
+        System.IO.File.WriteAllBytes(filePath, bytes);
+
+        Debug.Log("Snapshot saved at: " + filePath);
     }
 
 
@@ -124,6 +164,10 @@ public class CarController : MonoBehaviour
 
         if(timeSinceStart > 20 && overallFitness < 40){
             Death();
+        }
+
+        if(checkCenterCamera%100==0){
+            // receive input from cameraImageProcessor
         }
 
         if(overallFitness> 1000){
