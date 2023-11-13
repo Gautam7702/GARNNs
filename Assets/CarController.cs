@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -99,8 +100,12 @@ public class CarController : MonoBehaviour
         
         lastPosition = transform.position;
 
-        (accelaration, rotation) = network.RunNetwork(aSensor, bSensor, cSensor);
-
+        // temp name
+        List<float> position = new List<float>();
+        position.Add(aSensor);
+        position.Add(bSensor);
+        position.Add(cSensor);
+        (accelaration, rotation) = network.RunNetwork(position);
 
         MoveCar(accelaration, rotation);
 

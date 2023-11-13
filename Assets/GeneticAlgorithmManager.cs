@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.Distributions;
+using System.Linq;
+using static Unity.VisualScripting.LudiqRootObjectEditor;
 
 public class GeneticAlgorithmManager : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class GeneticAlgorithmManager : MonoBehaviour
 
     [Header("Controls")]
     public int initialPopulation = 85;
+
     [Range(0.0f, 1.0f)]
     public float mutationRate = 0.055f;
 
@@ -19,251 +23,149 @@ public class GeneticAlgorithmManager : MonoBehaviour
     public int worstAgentSelection = 3;
     public int numberToCrossover = 39;
 
-    private List<int> genePool = new List<int>();
-
-    private int naturallySelected;
-
-    private NeuralNetwork[] population;
-
     [Header("Public View")]
     public int currentGeneration;
     public int currentGenome = 0;
 
-    private ExperimentData experimentData = new ExperimentData(10);
+
+    private int naturallySelected;
+    private List<int> genePool = new();
+    private NeuralNetwork[] population;
+    //private ExperimentData experimentData = new(10);
 
     private void Start()
     {
-        CreatePopulation();
+        GeneratePopulation<NeuralNetwork>();
     }
 
-    private void CreatePopulation()
+    private void GeneratePopulation<T>() where T : NeuralNetwork, new()
     {
-        population = new NeuralNetwork[initialPopulation];
-        FillPopulationWithRandomValues(population, 0);
+        population = new T[initialPopulation];
+        Populate(population, 0);
         ResetToCurrentGenome();
-        experimentData.numberOfGenerations=10;
-        experimentData.bestAgentSelection=bestAgentSelection;
-        experimentData.worstAgentSelection=worstAgentSelection;
-        experimentData.numberToCrossover=numberToCrossover;
-        experimentData.mutationRate=mutationRate;
-        experimentData.populationSize=initialPopulation;
+
+        //experimentData.numberOfGenerations = 10;
+        //experimentData.bestAgentSelection = bestAgentSelection;
+        //experimentData.worstAgentSelection = worstAgentSelection;
+        //experimentData.numberToCrossover = numberToCrossover;
+        //experimentData.mutationRate = mutationRate;
+        //experimentData.populationSize = initialPopulation;
     }
 
-    private void ResetToCurrentGenome()
-    {
-        controller.ResetWithNetwork(population[currentGenome]);
-    }
-
-    private void FillPopulationWithRandomValues (NeuralNetwork[] newPopulation, int startingIndex)
+    private void Populate<T>(T[] newPopulation, int startingIndex) where T : NeuralNetwork, new()
     {
         while (startingIndex < initialPopulation)
         {
-            newPopulation[startingIndex] = new NeuralNetwork();
-            newPopulation[startingIndex].Init(controller.LAYERS, controller.NEURONS);
-            startingIndex++;
+            newPopulation[startingIndex] = new T();
+            newPopulation[startingIndex++].Initialize(3, 2, controller.LAYERS, controller.NEURONS);
         }
     }
 
-    public void Death (float fitness)
+    private void ResetToCurrentGenome() => controller.ResetWithNetwork(population[currentGenome]);
+
+    public void Death(float fitness)
     {
-
-        if (currentGenome < population.Length -1)
+        if (currentGenome < population.Length - 1)
         {
-
-            population[currentGenome].fitness = fitness;
-            currentGenome++;
+            population[currentGenome++].fitness = fitness;
             ResetToCurrentGenome();
-
         }
         else
         {
-            RePopulate();
+            RePopulate<NeuralNetwork>();
         }
-
     }
 
-    
-    private void RePopulate()
+    private void RePopulate<T>() where T : NeuralNetwork, new()
     {
         genePool.Clear();
-        
-        if(currentGeneration==10){
-            string jsonString = JsonUtility.ToJson(experimentData); 
-            string fileName = $"/{initialPopulation}-{mutationRate}-{bestAgentSelection}-{worstAgentSelection}-{numberToCrossover}-GA.json";
-            string filePath = Application.persistentDataPath + fileName;
-            File.WriteAllText(filePath, jsonString);
-            print(filePath);   
-            Time.timeScale = 0; 
-            return;
+        if (currentGeneration == 15)
+        {
+            //string jsonString = JsonUtility.ToJson(experimentData);
+            //string fileName = $"/{initialPopulation}-{mutationRate}-{bestAgentSelection}-{worstAgentSelection}-{numberToCrossover}-GA.json";
+            //string filePath = Application.persistentDataPath + fileName;
 
+            //File.WriteAllText(filePath, jsonString);
+            //Time.timeScale = 0;
+            return;
         }
+
         naturallySelected = 0;
         SortPopulation();
 
-        experimentData.fitnessAccrossGen[currentGeneration] = population[0].fitness;
+        //experimentData.fitnessAccrossGen[currentGeneration++] = population[0].fitness;
         currentGeneration++;
-
-        NeuralNetwork[] newPopulation = PickBestPopulation();
-
+        T[] newPopulation = PickBestPopulation<T>();
         Crossover(newPopulation);
         Mutate(newPopulation);
-
-        FillPopulationWithRandomValues(newPopulation, naturallySelected);
+        Populate(newPopulation, startingIndex: naturallySelected);
 
         population = newPopulation;
-
         currentGenome = 0;
-
         ResetToCurrentGenome();
-
     }
 
-    private void Mutate (NeuralNetwork[] newPopulation)
+    private T[] PickBestPopulation<T>() where T : NeuralNetwork, new()
     {
-
-        for (int i = 0; i < naturallySelected; i++)
-        {
-
-            for (int c = 0; c < newPopulation[i].weights.Count; c++)
-            {
-
-                if (Random.Range(0.0f, 1.0f) < mutationRate)
-                {
-                    newPopulation[i].weights[c] = MutateMatrix(newPopulation[i].weights[c]);
-                }
-
-            }
-
-        }
-
-    }
-
-    Matrix<float> MutateMatrix (Matrix<float> A)
-    {
-
-        int randomPoints = Random.Range(1, (A.RowCount * A.ColumnCount) / 7);
-
-        Matrix<float> C = A;
-
-        for (int i = 0; i < randomPoints; i++)
-        {
-            int randomColumn = Random.Range(0, C.ColumnCount);
-            int randomRow = Random.Range(0, C.RowCount);
-
-            C[randomRow, randomColumn] = Mathf.Clamp(C[randomRow, randomColumn] + Random.Range(-1f, 1f), -1f, 1f);
-        }
-
-        return C;
-
-    }
-
-    private void Crossover (NeuralNetwork[] newPopulation)
-    {
-        for (int i = 0; i < numberToCrossover; i+=2)
-        {
-            int AIndex = i;
-            int BIndex = i + 1;
-
-            if (genePool.Count >= 1)
-            {
-                for (int l = 0; l < 100; l++)
-                {
-                    AIndex = genePool[Random.Range(0, genePool.Count)];
-                    BIndex = genePool[Random.Range(0, genePool.Count)];
-
-                    if (AIndex != BIndex)
-                        break;
-                }
-            }
-
-            NeuralNetwork Child1 = new NeuralNetwork();
-            NeuralNetwork Child2 = new NeuralNetwork();
-
-            Child1.Init(controller.LAYERS, controller.NEURONS);
-            Child2.Init(controller.LAYERS, controller.NEURONS);
-
-            Child1.fitness = 0;
-            Child2.fitness = 0;
-
-
-            for (int w = 0; w < Child1.weights.Count; w++)
-            {
-
-                if (Random.Range(0.0f, 1.0f) < 0.5f)
-                {
-                    Child1.weights[w] = population[AIndex].weights[w];
-                    Child2.weights[w] = population[BIndex].weights[w];
-                }
-                else
-                {
-                    Child2.weights[w] = population[AIndex].weights[w];
-                    Child1.weights[w] = population[BIndex].weights[w];
-                }
-
-            }
-
-
-            for (int w = 0; w < Child1.biases.Count; w++)
-            {
-
-                if (Random.Range(0.0f, 1.0f) < 0.5f)
-                {
-                    Child1.biases[w] = population[AIndex].biases[w];
-                    Child2.biases[w] = population[BIndex].biases[w];
-                }
-                else
-                {
-                    Child2.biases[w] = population[AIndex].biases[w];
-                    Child1.biases[w] = population[BIndex].biases[w];
-                }
-
-            }
-
-            newPopulation[naturallySelected] = Child1;
-            naturallySelected++;
-
-            newPopulation[naturallySelected] = Child2;
-            naturallySelected++;
-
-        }
-    }
-
-    private NeuralNetwork[] PickBestPopulation()
-    {
-
-        NeuralNetwork[] newPopulation = new NeuralNetwork[initialPopulation];
+        T[] newPopulation = new T[initialPopulation];
 
         for (int i = 0; i < bestAgentSelection; i++)
         {
-            newPopulation[naturallySelected] = population[i].InitCopy(controller.LAYERS, controller.NEURONS);
-            newPopulation[naturallySelected].fitness = 0;
-            naturallySelected++;
-            
-            int f = Mathf.RoundToInt(population[i].fitness * 10);
+            newPopulation[naturallySelected] = population[i] as T;
+            newPopulation[naturallySelected++].fitness = 0;
 
-            for (int c = 0; c < f; c++)
+            for (int j = 0; j <= Mathf.RoundToInt(population[i].fitness * 10); j++)
             {
                 genePool.Add(i);
             }
-
         }
 
         for (int i = 0; i < worstAgentSelection; i++)
         {
-            int last = population.Length - 1;
-            last -= i;
+            int last = population.Length - 1 - i;
 
-            int f = Mathf.RoundToInt(population[last].fitness * 10);
-
-            for (int c = 0; c < f; c++)
+            for (int j = 0; j <= Mathf.RoundToInt(population[last].fitness * 10); j++)
             {
                 genePool.Add(last);
             }
-
         }
 
         return newPopulation;
+    }
 
+    private void Crossover<T>(T[] newPopulation) where T : NeuralNetwork, new() 
+    {
+        for (int i = 0; i < numberToCrossover; i++)
+        {
+            int individual1 = genePool[Random.Range(0, genePool.Count)], individual2 = genePool[Random.Range(0, genePool.Count)];
+ 
+            for (int j = 0; j < 100; j++)
+            {
+                if (individual1 != individual2)
+                    break;
+
+                individual1 = genePool[Random.Range(0, genePool.Count)];
+                individual2 = genePool[Random.Range(0, genePool.Count)];
+            }
+
+            var (child1, child2) = typeof(T) == typeof(RecurrentNeuralNetwork)
+                            ? RecurrentNeuralNetwork.Crossover(newPopulation[individual1], newPopulation[individual2])
+                            : NeuralNetwork.Crossover(newPopulation[individual1], newPopulation[individual2]);
+
+            if (naturallySelected >= newPopulation.Length)
+                return;
+
+            newPopulation[naturallySelected++] = child1 as T;
+            newPopulation[naturallySelected++] = child2 as T;
+        }
+    }
+
+    private void Mutate<T>(T[] newPopulation) where T : NeuralNetwork
+    {
+        for (int i = 0; i < naturallySelected; i++)
+        {
+            newPopulation[i].Mutate(mutationRate);
+        }
     }
 
     private void SortPopulation()
@@ -274,12 +176,10 @@ public class GeneticAlgorithmManager : MonoBehaviour
             {
                 if (population[i].fitness < population[j].fitness)
                 {
-                    NeuralNetwork temp = population[i];
-                    population[i] = population[j];
-                    population[j] = temp;
+                    (population[j], population[i]) = (population[i], population[j]);
                 }
             }
         }
-
     }
+
 }
