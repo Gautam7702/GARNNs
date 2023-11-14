@@ -30,7 +30,7 @@ public class CarController : MonoBehaviour
 
     List<float> sensors =  new List<float>();
 
-    private CameraImageProcessor cameraImageProcessor;
+    //private CameraImageProcessor cameraImageProcessor;
     private Vector3 lastPosition;
     private float totalDistanceTravelled;
 
@@ -85,7 +85,6 @@ public class CarController : MonoBehaviour
         }
         for (int i = 0; i < numberOfSensors; i++){
             float angle = Mathf.PI / 6.0f + ((float)i/(float)(numberOfSensors-1))*2*Mathf.PI / 3.0f;
-            print(angle);
 
             Vector3 direction = new Vector3(Mathf.Cos(angle), 0.0f, Mathf.Sin(angle));
             Ray ray = new Ray(transform.position, transform.TransformDirection(direction));
@@ -100,7 +99,7 @@ public class CarController : MonoBehaviour
             }else{
                 sensors[i] = 0;
             }
-            sensors[i]+= 0.40f*noise;
+            sensors[i]+= 0.3f*noise;
         }
     }
 
@@ -155,31 +154,17 @@ public class CarController : MonoBehaviour
 
 
     private bool isAboveTrack(){
-        // Cast a ray from the car's position towards the downward direction
         Ray ray = new Ray(transform.position, Vector3.down);
+        float maxRayDistance = 100.0f;
 
-        // Set the maximum distance the ray can travel
-        float maxRayDistance = 100.0f; // Adjust this distance based on your scene
-
-        // Perform the raycast
         if (Physics.Raycast(ray, out RaycastHit hit, maxRayDistance))
         {
-            // The ray hit something
-            Debug.Log("Ray hit an object.");
-
-            // Access information about the hit object
             GameObject objectBelowCar = hit.collider.gameObject;
 
             if(objectBelowCar.name== "Road")
                 return true;
-            // Do something with the objectBelowCar, for example:
-            Debug.Log("Object below car: " + objectBelowCar.name);
         }
-        else
-        {
-            // The ray did not hit anything
-            Debug.Log("Ray did not hit any object.");
-        }
+
         return false;
     }
 
@@ -194,7 +179,6 @@ public class CarController : MonoBehaviour
         }
         isAboveTrack();
         if(overallFitness>1000){
-            // Saves the network to a json
             Death();
         }
     }

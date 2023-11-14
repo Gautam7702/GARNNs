@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GeneticAlgorithmManager : MonoBehaviour
@@ -73,22 +74,19 @@ public class GeneticAlgorithmManager : MonoBehaviour
     private void RePopulate<T>() where T : NeuralNetwork, new()
     {
         genePool.Clear();
-        if (currentGeneration == 30)
-        {
-            //string jsonString = JsonUtility.ToJson(experimentData);
-            //string fileName = $"/{initialPopulation}-{mutationRate}-{bestAgentSelection}-{worstAgentSelection}-{numberToCrossover}-GA.json";
-            //string filePath = Application.persistentDataPath + fileName;
-
-            //File.WriteAllText(filePath, jsonString);
-            //Time.timeScale = 0;
-            return;
-        }
-
         naturallySelected = 0;
         SortPopulation();
 
+        string suffix = (typeof(T) == typeof(NeuralNetwork)) ? "GAANN" : "GARNN";
+        string fileName = $"/{initialPopulation}-{mutationRate}-{bestAgentSelection}-{worstAgentSelection}-{numberToCrossover}-{suffix}.json";
+        string filePath = "Assets/" + fileName;
+        using StreamWriter writer = File.AppendText(filePath);
+        writer.WriteLine($"{{\"generation\":\"{currentGeneration}\",\"fitness\":\"{population[0].fitness}\"}}");
+
+        if (currentGeneration == 30)
+            return;
+
         //experimentData.fitnessAccrossGen[currentGeneration++] = population[0].fitness;
-        print(population[0].fitness + " " + population[^1].fitness);
         currentGeneration++;
         T[] newPopulation = PickBestPopulation<T>();
         Crossover(newPopulation);

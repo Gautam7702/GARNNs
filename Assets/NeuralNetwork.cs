@@ -82,7 +82,6 @@ public class NeuralNetwork : MonoBehaviour
     {
         for (int i = 0; i<input.Count; i++)
         {
-            print(i);
             inputLayer[0, i] = input[i];
         }
 
