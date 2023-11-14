@@ -83,7 +83,7 @@ public class GeneticAlgorithmManager : MonoBehaviour
         using StreamWriter writer = File.AppendText(filePath);
         writer.WriteLine($"{{\"generation\":\"{currentGeneration}\",\"fitness\":\"{population[0].fitness}\"}}");
 
-        if (currentGeneration == 30)
+        if (currentGeneration == 100)
             return;
 
         //experimentData.fitnessAccrossGen[currentGeneration++] = population[0].fitness;

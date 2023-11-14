@@ -62,8 +62,11 @@
     <Compile Include="Assets\NeuralNetwork.cs" />
     <Compile Include="Assets\CarController.cs" />
     <Compile Include="Assets\RecurrentNeuralNetwork.cs" />
+    <Compile Include="Assets\CameraImageProcessor.cs" />
     <Compile Include="Assets\GeneticAlgorithmManager.cs" />
+    <Compile Include="Assets\MoveCube.cs" />
     <Compile Include="Assets\ExperimentData.cs" />
+    <Compile Include="Assets\MoveCube2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
