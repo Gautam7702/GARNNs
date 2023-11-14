@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-
+    public LayerMask groundLayer; // Set this in the Inspector to the layer of the ground or object you want to check against
     private Vector3 startPosition,startRotation;
     [Range(-1f,1f)]
     public float accelaration,rotation;
@@ -24,11 +24,12 @@ public class CarController : MonoBehaviour
     public int LAYERS = 1;
     public int NEURONS = 10;
 
-    [Header("Center Camera")]
-    public Camera centerCamera;
+    // [Header("Center Camera")]
+    // public Camera centerCamera;
 
 
 
+    private CameraImageProcessor cameraImageProcessor;
     private Vector3 lastPosition;
     private float totalDistanceTravelled;
 
@@ -38,13 +39,14 @@ public class CarController : MonoBehaviour
 
     private NeuralNetwork network;
 
-    private int checkCenterCamera = 0;
+    // private int checkCenterCamera = 0;
 
 
     private void Awake(){
         startPosition = transform.position;
         startRotation = transform.eulerAngles;
         network = GetComponent<NeuralNetwork>();
+        // cameraImageProcessor = new CameraImageProcessor();
     }
 
     public void Reset(){
@@ -118,43 +120,70 @@ public class CarController : MonoBehaviour
 
         CalculateFitness();
 
-        checkCenterCamera+=1;
-        if(checkCenterCamera%100==0)
-            CaptureSnapshot();
+        // checkCenterCamera+=1;
+        // if(checkCenterCamera%100==0)
+        //     CaptureSnapshot();
 
     }
 
-    void CaptureSnapshot(){
-        // Create a RenderTexture with the same dimensions as the screen
-        RenderTexture renderTexture = new RenderTexture(Screen.width, Screen.height, 24);
-        Camera mainCamera = centerCamera;
+    // void CaptureSnapshot(){
+    //     // Create a RenderTexture with the same dimensions as the screen
+    //     RenderTexture renderTexture = new RenderTexture(Screen.width, Screen.height, 24);
+    //     Camera mainCamera = centerCamera;
 
-        // Set the target texture of the main camera to the RenderTexture
-        mainCamera.targetTexture = renderTexture;
+    //     // Set the target texture of the main camera to the RenderTexture
+    //     mainCamera.targetTexture = renderTexture;
 
-        // Render the camera's view to the RenderTexture
-        mainCamera.Render();
+    //     // Render the camera's view to the RenderTexture
+    //     mainCamera.Render();
 
-        // Read the pixels from the RenderTexture
-        RenderTexture.active = renderTexture;
-        Texture2D snapshot = new Texture2D(Screen.width, Screen.height);
-        snapshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
-        snapshot.Apply();
-        RenderTexture.active = null;
+    //     // Read the pixels from the RenderTexture
+    //     RenderTexture.active = renderTexture;
+    //     Texture2D snapshot = new Texture2D(Screen.width, Screen.height);
+    //     snapshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+    //     snapshot.Apply();
+    //     RenderTexture.active = null;
 
-        // Reset the target texture of the main camera
-        mainCamera.targetTexture = null;
+    //     // Reset the target texture of the main camera
+    //     mainCamera.targetTexture = null;
 
-        // Encode the Texture2D as a PNG file
-        byte[] bytes = snapshot.EncodeToPNG();
+    //     // Encode the Texture2D as a PNG file
+    //     byte[] bytes = snapshot.EncodeToPNG();
 
-        // Save the PNG file to disk (change the file path as needed)
-        string filePath = Application.dataPath + "/Snapshot.png";
-        System.IO.File.WriteAllBytes(filePath, bytes);
+    //     // Save the PNG file to disk (change the file path as needed)
+    //     string filePath = Application.dataPath + "/Snapshot.png";
+    //     System.IO.File.WriteAllBytes(filePath, bytes);
+    // }
 
-        Debug.Log("Snapshot saved at: " + filePath);
+
+    private bool isAboveTrack(){
+        // Cast a ray from the car's position towards the downward direction
+        Ray ray = new Ray(transform.position, Vector3.down);
+
+        // Set the maximum distance the ray can travel
+        float maxRayDistance = 100.0f; // Adjust this distance based on your scene
+
+        // Perform the raycast
+        if (Physics.Raycast(ray, out RaycastHit hit, maxRayDistance))
+        {
+            // The ray hit something
+            Debug.Log("Ray hit an object.");
+
+            // Access information about the hit object
+            GameObject objectBelowCar = hit.collider.gameObject;
+
+            if(objectBelowCar.name== "Road")
+                return true;
+            // Do something with the objectBelowCar, for example:
+            Debug.Log("Object below car: " + objectBelowCar.name);
+        }
+        else
+        {
+            // The ray did not hit anything
+            Debug.Log("Ray did not hit any object.");
+        }
+        return false;
     }
-
 
     private void CalculateFitness(){
         totalDistanceTravelled += Vector3.Distance(transform.position, lastPosition);
@@ -162,17 +191,12 @@ public class CarController : MonoBehaviour
         float avgSensor = (aSensor+bSensor+cSensor)/3;
         overallFitness =  totalDistanceTravelled*distanceWeight + avgSpeed*avgSpeedWeight + avgSensor*avgSensorWeight;
 
-        if(timeSinceStart > 20 && overallFitness < 40){
+        if(timeSinceStart > 20 && overallFitness < 50){
             Death();
         }
-
-        if(checkCenterCamera%100==0){
-            // receive input from cameraImageProcessor
-        }
-
-        if(overallFitness> 1000){
+        isAboveTrack();
+        if(overallFitness>1000){
             // Saves the network to a json
-
             Death();
         }
     }

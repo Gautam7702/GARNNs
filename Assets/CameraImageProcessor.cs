@@ -1,22 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine;
 using System;
 using System.Net.Sockets;
 using System.Text;
-using UnityEngine;
+using System.Collections;
 
-public class CameraImageProcessor
+public class CameraImageProcessor : MonoBehaviour
 {
-    private TcpClient client;
-    private NetworkStream stream;
-    private byte[] receiveBuffer = new byte[1024];
+    TcpClient client;
+    NetworkStream stream;
 
     private string ipAddr = "127.0.0.1";
     private int port = 12345;
-    public CameraImageProcessor(){
-        ConnectToServer(ipAddr,port);
-        
+    public int percentage;
+
+    private void Start()
+    {
+        ConnectToServer(ipAddr, port);
     }
+
     void ConnectToServer(string ipAddress, int port)
     {
         try
@@ -31,43 +32,32 @@ public class CameraImageProcessor
         }
     }
 
-    public string sendImagePath(string imagePath)
-        {
+    public void ReceivePercentageCoroutine()
+    {
             try
             {
-                // Convert the string to bytes
-                byte[] data = Encoding.UTF8.GetBytes(imagePath);
-
-                // Send the data through the network stream
-                stream.Write(data, 0, data.Length);
-
-                Debug.Log("String sent: " + imagePath);
-                return ReceiveResponse();
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Error sending string: " + e.Message);
-                return "0";
-            }
-        }
-    private string ReceiveResponse(){
-            try
-            {
-                // Clear the receive buffer
-                Array.Clear(receiveBuffer, 0, receiveBuffer.Length);
+                byte[] receiveBuffer = new byte[1024];
 
                 // Receive data from the network stream
                 int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
 
                 // Convert the received bytes to a string
                 string response = Encoding.UTF8.GetString(receiveBuffer, 0, bytesRead);
+                print(response);
 
-                return response;
+                // Convert the string to an integer
+                if (int.TryParse(response, out int receivedPercentage))
+                {
+                    percentage = receivedPercentage;
+                }
+                else
+                {
+                    Debug.LogWarning("Received data is not a valid integer: " + response);
+                }
             }
             catch (Exception e)
             {
                 Debug.LogError("Error receiving response: " + e.Message);
-                return null;
             }
-        }
+    }
 }
