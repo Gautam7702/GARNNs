@@ -1,8 +1,9 @@
 using MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
-
+using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
 
 public class NeuralNetwork : MonoBehaviour
@@ -81,6 +82,7 @@ public class NeuralNetwork : MonoBehaviour
     {
         for (int i = 0; i<input.Count; i++)
         {
+            print(i);
             inputLayer[0, i] = input[i];
         }
 

@@ -51,7 +51,7 @@ public class GeneticAlgorithmManager : MonoBehaviour
         while (startingIndex < initialPopulation)
         {
             newPopulation[startingIndex] = new T();
-            newPopulation[startingIndex++].Initialize(3, 2, controller.LAYERS, controller.NEURONS);
+            newPopulation[startingIndex++].Initialize(controller.numberOfSensors, 2, controller.LAYERS, controller.NEURONS);
         }
     }
 

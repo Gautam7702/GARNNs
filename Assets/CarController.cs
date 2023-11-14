@@ -23,19 +23,18 @@ public class CarController : MonoBehaviour
     [Header("Network Options")]
     public int LAYERS = 1;
     public int NEURONS = 10;
+    public int numberOfSensors = 5;
 
     // [Header("Center Camera")]
     // public Camera centerCamera;
 
-
+    List<float> sensors =  new List<float>();
 
     private CameraImageProcessor cameraImageProcessor;
     private Vector3 lastPosition;
     private float totalDistanceTravelled;
 
     private float avgSpeed;
-
-    private float aSensor,bSensor,cSensor;
 
     private NeuralNetwork network;
 
@@ -47,6 +46,7 @@ public class CarController : MonoBehaviour
         startRotation = transform.eulerAngles;
         network = GetComponent<NeuralNetwork>();
         // cameraImageProcessor = new CameraImageProcessor();
+       
     }
 
     public void Reset(){
@@ -78,27 +78,29 @@ public class CarController : MonoBehaviour
     }
 
     private void InputSensors(){
-        Vector3 a = (transform.forward+transform.right); // front right
-        Vector3 b = transform.forward; // front 
-        Vector3 c = (transform.forward-transform.right); // front left
-
-        Ray rayTowardsA = new Ray(transform.position,a);
-        Ray rayTowardsB = new Ray(transform.position,b);
-        Ray rayTowardsC = new Ray(transform.position,c);
-
-        RaycastHit hit;
-         
-        if (Physics.Raycast(rayTowardsA,out hit)){
-            aSensor = hit.distance/30;
-            Debug.DrawLine(rayTowardsA.origin, hit.point, Color.red);
+        if(sensors.Count==0){
+            for (int i = 0; i < numberOfSensors; i++){
+                sensors.Add(i + 1); // Replace this with your actual sensor values
+            }
         }
-        if (Physics.Raycast(rayTowardsB,out hit)){
-            bSensor = hit.distance/30;
-            Debug.DrawLine(rayTowardsB.origin, hit.point, Color.blue);
-        }
-        if (Physics.Raycast(rayTowardsC,out hit)){
-            cSensor = hit.distance/30;
-            Debug.DrawLine(rayTowardsC.origin, hit.point, Color.yellow);
+        for (int i = 0; i < numberOfSensors; i++){
+            float angle = Mathf.PI / 6.0f + ((float)i/(float)(numberOfSensors-1))*2*Mathf.PI / 3.0f;
+            print(angle);
+
+            Vector3 direction = new Vector3(Mathf.Cos(angle), 0.0f, Mathf.Sin(angle));
+            Ray ray = new Ray(transform.position, transform.TransformDirection(direction));
+
+            RaycastHit hit;
+            System.Random random = new System.Random();
+            float noise = (float)(random.NextDouble());
+            if (Physics.Raycast(ray, out hit))
+            {
+                sensors[i] = (hit.distance)/ 30.0f;
+                // Debug.DrawLine(ray.origin, hit.point);
+            }else{
+                sensors[i] = 0;
+            }
+            sensors[i]+= 0.40f*noise;
         }
     }
 
@@ -108,11 +110,7 @@ public class CarController : MonoBehaviour
         lastPosition = transform.position;
 
         // temp name
-        List<float> position = new List<float>();
-        position.Add(aSensor);
-        position.Add(bSensor);
-        position.Add(cSensor);
-        (accelaration, rotation) = network.RunNetwork(position);
+        (accelaration, rotation) = network.RunNetwork(sensors);
 
         MoveCar(accelaration, rotation);
 
@@ -188,7 +186,7 @@ public class CarController : MonoBehaviour
     private void CalculateFitness(){
         totalDistanceTravelled += Vector3.Distance(transform.position, lastPosition);
         avgSpeed = totalDistanceTravelled/timeSinceStart;
-        float avgSensor = (aSensor+bSensor+cSensor)/3;
+        float avgSensor = 0;
         overallFitness =  totalDistanceTravelled*distanceWeight + avgSpeed*avgSpeedWeight + avgSensor*avgSensorWeight;
 
         if(timeSinceStart > 20 && overallFitness < 50){
