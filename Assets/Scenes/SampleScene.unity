@@ -153,11 +153,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1285404975}
-  initialPopulation: 40
-  mutationRate: 0.15
+  initialPopulation: 30
+  mutationRate: 0.2
   bestAgentSelection: 15
-  worstAgentSelection: 1
-  numberToCrossover: 20
+  worstAgentSelection: 0
+  numberToCrossover: 15
   currentGeneration: 0
   currentGenome: 0
 --- !u!4 &289688885
@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 358651364}
   - component: {fileID: 358651369}
   m_Layer: 0
-  m_Name: Cube (20)
+  m_Name: Obstacle_6
   m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 380721354}
   - component: {fileID: 380721353}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Surrounding_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 407756748}
   - component: {fileID: 407756752}
   m_Layer: 0
-  m_Name: Cube (14)
+  m_Name: Obstacle_3
   m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -545,7 +545,7 @@ GameObject:
   - component: {fileID: 425272110}
   - component: {fileID: 425272109}
   m_Layer: 0
-  m_Name: Cube (19)
+  m_Name: Obstacle_5
   m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -663,7 +663,7 @@ GameObject:
   - component: {fileID: 441814055}
   - component: {fileID: 441814054}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Surrounding_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -785,7 +785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3426678328955577158, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_Name
-      value: Tree (1)
+      value: Tree_2
       objectReference: {fileID: 0}
     - target: {fileID: 7189993337823788698, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -854,7 +854,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3086f93c75c475e40878870edc5e1b1c, type: 2}
     - target: {fileID: 100000, guid: 315102d4aa63f4d4695f377e8fb7ca09, type: 3}
       propertyPath: m_Name
-      value: Course01
+      value: Environment
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 315102d4aa63f4d4695f377e8fb7ca09, type: 3}
       propertyPath: m_Name
@@ -1027,7 +1027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3426678328955577158, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_Name
-      value: Tree (3)
+      value: Tree_5
       objectReference: {fileID: 0}
     - target: {fileID: 7189993337823788698, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1087,7 +1087,7 @@ GameObject:
   - component: {fileID: 474559224}
   - component: {fileID: 474559223}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: Surrounding_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1192,7 +1192,7 @@ GameObject:
   - component: {fileID: 474978535}
   - component: {fileID: 474978534}
   m_Layer: 0
-  m_Name: Sphere (1)
+  m_Name: Surrounding_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1297,7 +1297,7 @@ GameObject:
   - component: {fileID: 504016815}
   - component: {fileID: 504016814}
   m_Layer: 0
-  m_Name: Cube (11)
+  m_Name: Surrounding_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1586,7 +1586,7 @@ GameObject:
   - component: {fileID: 755311681}
   - component: {fileID: 755311680}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Obstacle_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1692,7 +1692,7 @@ GameObject:
   - component: {fileID: 855696987}
   - component: {fileID: 855696986}
   m_Layer: 0
-  m_Name: Cube (13)
+  m_Name: Obstacle_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1890,7 +1890,7 @@ GameObject:
   - component: {fileID: 994610153}
   - component: {fileID: 994610152}
   m_Layer: 0
-  m_Name: Cube (17)
+  m_Name: Surrounding_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1995,7 +1995,7 @@ GameObject:
   - component: {fileID: 1020318574}
   - component: {fileID: 1020318573}
   m_Layer: 0
-  m_Name: Cube (7)
+  m_Name: Surrounding_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2165,7 +2165,7 @@ GameObject:
   - component: {fileID: 1068901154}
   - component: {fileID: 1068901153}
   m_Layer: 0
-  m_Name: Cube (16)
+  m_Name: Surrounding_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2270,7 +2270,7 @@ GameObject:
   - component: {fileID: 1076469136}
   - component: {fileID: 1076469135}
   m_Layer: 0
-  m_Name: Cube (9)
+  m_Name: Surrounding_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2440,7 +2440,7 @@ GameObject:
   - component: {fileID: 1186606657}
   - component: {fileID: 1186606656}
   m_Layer: 0
-  m_Name: Cube (12)
+  m_Name: Surrounding_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2562,7 +2562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3426678328955577158, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_Name
-      value: Tree (6)
+      value: Tree_4
       objectReference: {fileID: 0}
     - target: {fileID: 7189993337823788698, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2705,7 +2705,7 @@ GameObject:
   - component: {fileID: 1346919237}
   - component: {fileID: 1346919236}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Surrounding_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2810,7 +2810,7 @@ GameObject:
   - component: {fileID: 1359311525}
   - component: {fileID: 1359311524}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: Surrounding_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3089,7 +3089,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3426678328955577158, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_Name
-      value: Tree (2)
+      value: Tree_3
       objectReference: {fileID: 0}
     - target: {fileID: 7189993337823788698, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3151,7 +3151,7 @@ GameObject:
   - component: {fileID: 1424706784}
   - component: {fileID: 1424706783}
   m_Layer: 0
-  m_Name: Cube (21)
+  m_Name: Obstacle_7
   m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3281,7 +3281,7 @@ GameObject:
   - component: {fileID: 1440873047}
   - component: {fileID: 1440873046}
   m_Layer: 0
-  m_Name: Cube (15)
+  m_Name: Surrounding_19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3386,7 +3386,7 @@ GameObject:
   - component: {fileID: 1449251126}
   - component: {fileID: 1449251125}
   m_Layer: 0
-  m_Name: Cube (4)
+  m_Name: Surrounding_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3491,7 +3491,7 @@ GameObject:
   - component: {fileID: 1475713124}
   - component: {fileID: 1475713123}
   m_Layer: 0
-  m_Name: Cube (8)
+  m_Name: Surrounding_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3721,7 +3721,7 @@ GameObject:
   - component: {fileID: 1662143477}
   - component: {fileID: 1662143476}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Surrounding_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3825,7 +3825,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100008, guid: 10d5972a5440d489f8a54e2d7498188b, type: 3}
       propertyPath: m_Name
-      value: jeep
+      value: Jeep
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 10d5972a5440d489f8a54e2d7498188b, type: 3}
       propertyPath: m_LocalScale.x
@@ -3913,7 +3913,7 @@ GameObject:
   - component: {fileID: 1924321416}
   - component: {fileID: 1924321415}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: Surrounding_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4083,7 +4083,7 @@ GameObject:
   - component: {fileID: 2005944775}
   - component: {fileID: 2005944774}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Surrounding_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4190,7 +4190,7 @@ GameObject:
   - component: {fileID: 2061003276}
   - component: {fileID: 2061003275}
   m_Layer: 0
-  m_Name: Cube (10)
+  m_Name: Surrounding_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4312,7 +4312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3426678328955577158, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_Name
-      value: Tree (4)
+      value: Tree_6
       objectReference: {fileID: 0}
     - target: {fileID: 7189993337823788698, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4373,7 +4373,7 @@ GameObject:
   - component: {fileID: 2136276679}
   - component: {fileID: 2136276678}
   m_Layer: 0
-  m_Name: Cube (18)
+  m_Name: Obstacle_4
   m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4508,7 +4508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3426678328955577158, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_Name
-      value: Tree (5)
+      value: Tree_7
       objectReference: {fileID: 0}
     - target: {fileID: 7189993337823788698, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4585,7 +4585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3426678328955577158, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_Name
-      value: Tree
+      value: Tree_1
       objectReference: {fileID: 0}
     - target: {fileID: 7189993337823788698, guid: b141dab480413104f834d24c395cc5e8, type: 3}
       propertyPath: m_LocalPosition.x

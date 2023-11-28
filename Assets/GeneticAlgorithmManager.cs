@@ -125,12 +125,12 @@ public class GeneticAlgorithmManager : MonoBehaviour
         return newPopulation;
     }
 
-    private void Crossover<T>(T[] newPopulation) where T : RecurrentNeuralNetwork, new() 
+    private void Crossover<T>(T[] newPopulation) where T : RecurrentNeuralNetwork, new()
     {
         for (int i = 0; i < numberToCrossover; i++)
         {
             int individual1 = genePool[Random.Range(0, genePool.Count)], individual2 = genePool[Random.Range(0, genePool.Count)];
- 
+
             for (int j = 0; j < 100; j++)
             {
                 if (individual1 != individual2)

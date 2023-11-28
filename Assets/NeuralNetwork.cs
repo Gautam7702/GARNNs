@@ -13,8 +13,8 @@ public class NeuralNetwork : MonoBehaviour
     public List<Matrix<float>> hiddenLayers, weights;
     public List<float> biases;
     public float fitness;
-    
-    public void Initialize(int inputLayerCount, int outputLayerCount, int hiddenLayerCount, int hiddenNeuronCount) 
+
+    public void Initialize(int inputLayerCount, int outputLayerCount, int hiddenLayerCount, int hiddenNeuronCount)
     {
         inputLayer = Matrix<float>.Build.Dense(1, inputLayerCount);
         outputLayer = Matrix<float>.Build.Dense(1, outputLayerCount);
@@ -80,7 +80,7 @@ public class NeuralNetwork : MonoBehaviour
 
     public (float, float) RunNetwork(List<float> input)
     {
-        for (int i = 0; i<input.Count; i++)
+        for (int i = 0; i < input.Count; i++)
         {
             inputLayer[0, i] = input[i];
         }

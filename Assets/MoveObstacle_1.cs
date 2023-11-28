@@ -17,6 +17,6 @@ public class MoveCube : MonoBehaviour
             factor *= -1;
         }
 
-        transform.position += new Vector3((float) 0.5 * Time.deltaTime * factor, 0, (float) 0.25 * Time.deltaTime * factor);
+        transform.position += new Vector3((float)0.5 * Time.deltaTime * factor, 0, (float)0.25 * Time.deltaTime * factor);
     }
 }
