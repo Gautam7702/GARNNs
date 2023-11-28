@@ -154,10 +154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1285404975}
   initialPopulation: 30
-  mutationRate: 0.2
-  bestAgentSelection: 15
+  mutationRate: 0.1
+  bestAgentSelection: 20
   worstAgentSelection: 0
-  numberToCrossover: 15
+  numberToCrossover: 10
   currentGeneration: 0
   currentGenome: 0
 --- !u!4 &289688885
