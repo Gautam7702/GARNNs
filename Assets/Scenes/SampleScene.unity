@@ -970,7 +970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4695666576454475813, guid: 315102d4aa63f4d4695f377e8fb7ca09, type: 3}
       propertyPath: m_Name
-      value: Wall
+      value: Grass
       objectReference: {fileID: 0}
     - target: {fileID: 7469484624682501897, guid: 315102d4aa63f4d4695f377e8fb7ca09, type: 3}
       propertyPath: m_Name
