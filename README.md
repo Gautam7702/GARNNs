@@ -14,7 +14,7 @@ The provided Unity project focuses on implementing a genetic algorithm for self-
 The Unity project doesn't require manual compilation as it's developed within the Unity environment. However, ensure the following steps:
 
 1. **Open in Unity**: Open the project folder in the Unity Editor.
-2. **Unity Editor Configuration**: Checksettings like target platform, rendering settings, and other project-specific configurations within the Unity Editor. You can go with default as well.
+2. **Unity Editor Configuration**: Check settings like target platform, rendering settings, and other project-specific configurations within the Unity Editor. You can go with default as well.
 3. **Build Settings**: Set the desired build settings (e.g., platform, scene configurations) using the Unity Editor's build settings. You can go with default as well.
 
 ## Execution:
@@ -29,5 +29,5 @@ To run the genetic algorithm self-driving simulation:
 ## Notes:
 
 - **File Locations**: The code provided assumes specific file paths for data storage. Make sure the file writing and reading operations have the necessary permissions and file paths set correctly.
-- **Experiment Configuration**: Experiment-specific data (such as number of generations, mutation rates, population sizes) may need adjustment based on specific requirements.
+- **Experiment Configuration**: Experiment-specific data (such as number of generations, mutation rates, and population sizes) may need adjustment based on specific requirements.
 - **Customization**: Modify parameters, neural network structures, and algorithmic behaviors as needed for experimentation or improvement.
