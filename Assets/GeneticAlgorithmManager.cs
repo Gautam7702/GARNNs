@@ -71,7 +71,7 @@ public class GeneticAlgorithmManager : MonoBehaviour
 
         string suffix = (typeof(T) == typeof(NeuralNetwork)) ? "GAANN" : "GARNN";
         string fileName = $"/{initialPopulation}-{mutationRate}-{bestAgentSelection}-{worstAgentSelection}-{numberToCrossover}-{suffix}.json";
-        string filePath = "Assets/Results" + fileName;
+        string filePath = "Results" + fileName;
         using StreamWriter writer = File.AppendText(filePath);
         writer.WriteLine($"{{\"generation\":\"{currentGeneration}\",\"fitness\":\"{population[0].fitness}\"}}");
 
