@@ -1,4 +1,3 @@
-# AI-term-paper
 # Evaluating Self-Driving Car Performance with RNNs and Genetic Algorithm Optimization
 
 ## Code/Package Structure:
