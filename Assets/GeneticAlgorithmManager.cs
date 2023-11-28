@@ -25,29 +25,21 @@ public class GeneticAlgorithmManager : MonoBehaviour
 
     private int naturallySelected;
     private List<int> genePool = new();
-    private NeuralNetwork[] population;
-    //private ExperimentData experimentData = new(10);
+    private RecurrentNeuralNetwork[] population;
 
     private void Start()
     {
-        GeneratePopulation<NeuralNetwork>();
+        GeneratePopulation<RecurrentNeuralNetwork>();
     }
 
-    private void GeneratePopulation<T>() where T : NeuralNetwork, new()
+    private void GeneratePopulation<T>() where T : RecurrentNeuralNetwork, new()
     {
         population = new T[initialPopulation];
         Populate(population, 0);
         ResetToCurrentGenome();
-
-        //experimentData.numberOfGenerations = 10;
-        //experimentData.bestAgentSelection = bestAgentSelection;
-        //experimentData.worstAgentSelection = worstAgentSelection;
-        //experimentData.numberToCrossover = numberToCrossover;
-        //experimentData.mutationRate = mutationRate;
-        //experimentData.populationSize = initialPopulation;
     }
 
-    private void Populate<T>(T[] newPopulation, int startingIndex) where T : NeuralNetwork, new()
+    private void Populate<T>(T[] newPopulation, int startingIndex) where T : RecurrentNeuralNetwork, new()
     {
         while (startingIndex < initialPopulation)
         {
@@ -67,11 +59,11 @@ public class GeneticAlgorithmManager : MonoBehaviour
         }
         else
         {
-            RePopulate<NeuralNetwork>();
+            RePopulate<RecurrentNeuralNetwork>();
         }
     }
 
-    private void RePopulate<T>() where T : NeuralNetwork, new()
+    private void RePopulate<T>() where T : RecurrentNeuralNetwork, new()
     {
         genePool.Clear();
         naturallySelected = 0;
@@ -79,14 +71,13 @@ public class GeneticAlgorithmManager : MonoBehaviour
 
         string suffix = (typeof(T) == typeof(NeuralNetwork)) ? "GAANN" : "GARNN";
         string fileName = $"/{initialPopulation}-{mutationRate}-{bestAgentSelection}-{worstAgentSelection}-{numberToCrossover}-{suffix}.json";
-        string filePath = "Assets/" + fileName;
+        string filePath = "Assets/Results" + fileName;
         using StreamWriter writer = File.AppendText(filePath);
         writer.WriteLine($"{{\"generation\":\"{currentGeneration}\",\"fitness\":\"{population[0].fitness}\"}}");
 
-        if (currentGeneration == 100)
+        if (currentGeneration == 20)
             return;
 
-        //experimentData.fitnessAccrossGen[currentGeneration++] = population[0].fitness;
         currentGeneration++;
         T[] newPopulation = PickBestPopulation<T>();
         Crossover(newPopulation);
@@ -98,7 +89,7 @@ public class GeneticAlgorithmManager : MonoBehaviour
         ResetToCurrentGenome();
     }
 
-    private T[] PickBestPopulation<T>() where T : NeuralNetwork, new()
+    private T[] PickBestPopulation<T>() where T : RecurrentNeuralNetwork, new()
     {
         T[] newPopulation = new T[initialPopulation];
 
@@ -134,7 +125,7 @@ public class GeneticAlgorithmManager : MonoBehaviour
         return newPopulation;
     }
 
-    private void Crossover<T>(T[] newPopulation) where T : NeuralNetwork, new() 
+    private void Crossover<T>(T[] newPopulation) where T : RecurrentNeuralNetwork, new() 
     {
         for (int i = 0; i < numberToCrossover; i++)
         {
@@ -163,9 +154,9 @@ public class GeneticAlgorithmManager : MonoBehaviour
         }
     }
 
-    private void Mutate<T>(T[] newPopulation) where T : NeuralNetwork
+    private void Mutate<T>(T[] newPopulation) where T : RecurrentNeuralNetwork
     {
-        for (int i = 0; i < Mathf.Min(naturallySelected, newPopulation.Length); i++)
+        for (int i = bestAgentSelection; i < Mathf.Min(naturallySelected, newPopulation.Length); i++)
         {
             newPopulation[i].Mutate(mutationRate);
         }

@@ -84,8 +84,8 @@ public class RecurrentNeuralNetwork : NeuralNetwork
 
         for (int i = 1; i < hiddenLayers.Count; i++)
         {
-            // hiddenLayers[i] = ((hiddenLayers[i] * recurrentWeights[i]) + recurrentBiases[i]).PointwiseTanh();
-            hiddenLayers[i] = (hiddenLayers[i - 1] * weights[i]) + biases[i];
+            hiddenLayers[i] = ((hiddenLayers[i] * recurrentWeights[i]) + recurrentBiases[i]).PointwiseTanh();
+            hiddenLayers[i] += (hiddenLayers[i - 1] * weights[i]) + biases[i];
             hiddenLayers[i] = hiddenLayers[i].PointwiseTanh();
         }
 
