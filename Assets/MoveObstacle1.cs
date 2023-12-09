@@ -1,6 +1,7 @@
 using UnityEngine;
 public class MoveCube : MonoBehaviour
 {
+
     int counter, factor;
 
     private void Start()
@@ -19,4 +20,5 @@ public class MoveCube : MonoBehaviour
 
         transform.position += new Vector3((float)0.5 * Time.deltaTime * factor, 0, (float)0.25 * Time.deltaTime * factor);
     }
+    
 }

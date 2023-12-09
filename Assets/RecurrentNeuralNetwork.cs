@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class RecurrentNeuralNetwork : NeuralNetwork
 {
+    
     public List<Matrix<float>> recurrentWeights = new();
     public List<float> recurrentBiases = new();
 

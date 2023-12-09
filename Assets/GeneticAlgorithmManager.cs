@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GeneticAlgorithmManager : MonoBehaviour
 {
+    
     [Header("References")]
     public CarController controller;
 
