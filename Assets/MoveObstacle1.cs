@@ -1,7 +1,7 @@
 using UnityEngine;
-
-public class MoveCube2 : MonoBehaviour
+public class MoveCube : MonoBehaviour
 {
+
     int counter, factor;
 
     private void Start()
@@ -18,6 +18,7 @@ public class MoveCube2 : MonoBehaviour
             factor *= -1;
         }
 
-        transform.position += new Vector3((float)-0.75 * Time.deltaTime * factor, 0, (float)0.25 * Time.deltaTime * factor);
+        transform.position += new Vector3((float)0.5 * Time.deltaTime * factor, 0, (float)0.25 * Time.deltaTime * factor);
     }
+    
 }
