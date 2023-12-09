@@ -29,3 +29,5 @@ To run the genetic algorithm self-driving simulation:
 - **File Locations**: The code provided assumes specific file paths for data storage. Make sure the file writing and reading operations have the necessary permissions and file paths set correctly.
 - **Experiment Configuration**: Experiment-specific data (such as number of generations, mutation rates, and population sizes) may need adjustment based on specific requirements.
 - **Customization**: Modify parameters, neural network structures, and algorithmic behaviors as needed for experimentation or improvement.
+
+For a detailed understanding of the research, experimental setup, and results, refer to the provided research paper in the repository: Evaluating Self-Driving Car Performance with RNNs and Genetic Algorithm Optimization.pdf.
